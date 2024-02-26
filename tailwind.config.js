@@ -6,7 +6,8 @@ export default {
   ],
   theme: {
     fontFamily:{
-      'display': ['Stifly', 'sans-serif'],
+      'display': ['Stifly', 'monospace'],
+      'type': ['Francisco', 'serif'],
     },
     extend: {},
   },
