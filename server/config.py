@@ -16,7 +16,7 @@ secret_key = os.environ.get("SECRET_KEY")
 
 # Instantiate app, set attributes
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fund-os.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///doomscroll.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
