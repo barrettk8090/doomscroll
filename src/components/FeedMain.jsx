@@ -1,5 +1,9 @@
+import { useState, useEffect } from "react";
+
 
 function FeedMain(){
+
+
     return (
         <div>
             <h2>Feed Main</h2>
