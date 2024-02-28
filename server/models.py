@@ -44,6 +44,8 @@ class Category(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
+    news_item = db.relationship('NewsItem', back_populates='category')
+
 class NewsItem(db.Model, SerializerMixin):
      __tablename__ = 'news_items'
 
@@ -51,8 +53,10 @@ class NewsItem(db.Model, SerializerMixin):
      title = db.Column(db.String, nullable=False)
      url = db.Column(db.String, nullable=False)
      category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+     feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id'))
 
      category = db.relationship('Category', back_populates='news_item')
+     feed = db.relationship('Feed', back_populates='news_item')
 
 
 
