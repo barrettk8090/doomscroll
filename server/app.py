@@ -33,7 +33,7 @@ class Feeds_Route(Resource):
         all_feeds = Feed.query.all()
         feed_dict =[]
         for feed in all_feeds:
-            feed_dict.append(feed.to_dict(rules = ('-feed.user', '-user.feed', '-feed.news_item', '-user._password_hash')))
+            feed_dict.append(feed.to_dict(rules = ('-feed.user', '-user.feed', )))
         return make_response(feed_dict, 200)
     def post(self):
         data = request.get_json()
@@ -50,3 +50,6 @@ api.add_resource(Feeds_Route, '/feeds')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
+
+# '-feed.news_item', '-news_item.feed' '-user._password_hash','-news_item.user','-user.news_item', '-news_item.category', '-category.news_item', '-category.news_item',

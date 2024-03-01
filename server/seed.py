@@ -33,7 +33,7 @@ with app.app_context():
     NewsItem.query.delete()
     
     print("Creating news items...")
-    news_item1 = NewsItem(title="Penguins in Antarctica are Dying", url="https://www.nytimes.com/2024/01/30/science/antarctica-bird-flu-penguins.html", category_id=1)
+    news_item1 = NewsItem(title="Penguins in Antarctica are Dying", url="https://www.nytimes.com/2024/01/30/science/antarctica-bird-flu-penguins.html", category_id=1, feed_id=1)
     db.session.add(news_item1)
     db.session.commit()
 

@@ -29,6 +29,8 @@ class User(db.Model, SerializerMixin):
     def authenticate(self,password):
         return bcrypt.check_password_hash(self._password_hash,password.encode('utf-8'))
     
+    # serialize_rules = ('-user._password_hash', '-user.feed', '-feed.user', '-feed.news_item', '-news_item.feed', '-news_item.user', '-user.news_item', '-news_item.category', '-category.news_item', '-category.news_item',)
+    
 class Feed(db.Model, SerializerMixin):
     __tablename__ = 'feeds'
     id = db.Column(db.Integer, primary_key=True)

@@ -10,7 +10,7 @@ function FeedMain(){
             .then(data => setFeed(data))
     }, []);
 
-    const feedName = feed.map((feed) => { return feed.name });
+    const feedName = feed.map((feed) => { return <p>{feed.name}</p> });
 
 
     return (
