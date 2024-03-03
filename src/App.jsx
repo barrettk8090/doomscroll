@@ -8,15 +8,20 @@ import {
   Router,
   Link
 } from "react-router-dom";
+
+import supabase from './Config/supabaseClient'
+
 import './App.css'
 import Home from './components/Home'
 import FeedMain from './components/FeedMain'
 
 function App() {
-  
+  console.log(supabase)
 
   return (
+    
     <>
+
       <BrowserRouter>
         {/* <Nav user={user} setUser={setUser} ethAddress={ethAddress} setEthAddress={setEthAddress} connectWallet={connectWallet}/> */}
         <Routes>
