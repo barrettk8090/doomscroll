@@ -16,7 +16,7 @@ import Home from './components/Home'
 import FeedMain from './components/FeedMain'
 
 function App() {
-  console.log(supabase)
+  
 
   return (
     
@@ -25,8 +25,8 @@ function App() {
       <BrowserRouter>
         {/* <Nav user={user} setUser={setUser} ethAddress={ethAddress} setEthAddress={setEthAddress} connectWallet={connectWallet}/> */}
         <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/feed" element={<FeedMain/>} />
+          <Route path="/" element={<Home />}/>
+          <Route path="/feed" element={<FeedMain supabase={supabase}/>} />
 
         </Routes>
         </BrowserRouter>

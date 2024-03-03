@@ -1,22 +1,50 @@
 import { useState, useEffect } from "react";
 
-function FeedMain(){
+function FeedMain({supabase}){
 
-    const [feed, setFeed] = useState([]);
+    // const [feed, setFeed] = useState([]);
+
+    // useEffect(() => {
+    //     fetch(`/api/feeds`)
+    //         .then(r => r.json())
+    //         .then(data => setFeed(data))
+    // }, []);
+
+    // const feedName = feed.map((feed) => { return <p>{feed.name}</p> });
+
+    const [fetchError, setFetchError] = useState(null)
+    const [category, setCategory] = useState(null)
 
     useEffect(() => {
-        fetch(`/api/feeds`)
-            .then(r => r.json())
-            .then(data => setFeed(data))
-    }, []);
+        const fetchCategories = async () => {
+            const {data, error} = await supabase
+                .from("category")
+                .select()
 
-    const feedName = feed.map((feed) => { return <p>{feed.name}</p> });
-
+            if (error) {
+                setFetchError("Error fetching categories")
+                setCategory(null)
+                console.log(error)
+            }
+            if (data) {
+                setCategory(data)
+                setFetchError(null)
+            }    
+        }
+        fetchCategories()
+    }, [])
 
     return (
         <div>
             <h2>Feed Main</h2>
-            <p>{feedName}</p>
+            {fetchError && <p>{fetchError}</p>}
+            {category && (
+                <div>
+                    {category.map(singleCat => (
+                        <p>{singleCat.name}</p>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
