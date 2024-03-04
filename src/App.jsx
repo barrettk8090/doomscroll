@@ -26,6 +26,14 @@ function App() {
 
       <BrowserRouter>
         {/* <Nav user={user} setUser={setUser} ethAddress={ethAddress} setEthAddress={setEthAddress} connectWallet={connectWallet}/> */}
+        <nav>
+          <ul className="flex justify-between">
+            <Link to="/"><li>Home</li></Link>
+            <Link to="/create-account"><li>Create Account</li></Link>
+            <Link to="login"><li>Login</li></Link>
+            <Link to="/feed"><li>Feed Main</li></Link>
+          </ul>
+        </nav>
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/feed" element={<FeedMain supabase={supabase}/>} />

@@ -19,6 +19,11 @@ function CreateAccount({supabase}){
 
     return(
         <>
+            <div>
+                <h1 className="font-type text-6xl"> Create Your Account</h1>
+                <p className="font-type text-3xl">An account is required to view and subscribe to feed topics and create your custom doomscroll feed. </p>
+            </div>
+
             <form>
                 <label htmlFor="email">Email Address </label>
                 <input type="text" id="email" name="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)}/>
