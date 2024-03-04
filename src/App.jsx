@@ -15,6 +15,7 @@ import './App.css'
 import Home from './components/Home'
 import FeedMain from './components/FeedMain'
 import CreateAccount from './components/CreateAccount';
+import Login from './components/Login'
 
 function App() {
   
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/feed" element={<FeedMain supabase={supabase}/>} />
           <Route path="/create-account" element={<CreateAccount supabase={supabase} />}/>
+          <Route path="/login" element={<Login supabase={supabase}/>} /> 
 
         </Routes>
         </BrowserRouter>
