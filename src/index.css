@@ -55,7 +55,12 @@ button {
 }
 
 button:hover {
-  /* border-color: #646cff; */
+  border: 1px solid black;
+  padding: 0.6em 1.2em;
+  font-family: Francisco, serif, system-ui;
+  /* background-color: #1a1a1a; */
+  cursor: pointer;
+  box-shadow: 4px 4px black;
 }
 button:focus,
 button:focus-visible {

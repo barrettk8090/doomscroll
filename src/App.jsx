@@ -14,6 +14,7 @@ import supabase from './Config/supabaseClient'
 import './App.css'
 import Home from './components/Home'
 import FeedMain from './components/FeedMain'
+import CreateAccount from './components/CreateAccount';
 
 function App() {
   
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/feed" element={<FeedMain supabase={supabase}/>} />
+          <Route path="/create-account" element={<CreateAccount supabase={supabase} />}/>
 
         </Routes>
         </BrowserRouter>
