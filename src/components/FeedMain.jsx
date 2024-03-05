@@ -15,6 +15,9 @@ function FeedMain({supabase}){
     const [fetchError, setFetchError] = useState(null)
     const [category, setCategory] = useState(null)
 
+    const [barrettFetchError, setBarrettFetchError] = useState(null)
+    const [barrettFeed, setBarrettFeed] = useState(null)
+
     useEffect(() => {
         const fetchCategories = async () => {
             const {data, error} = await supabase
@@ -34,8 +37,36 @@ function FeedMain({supabase}){
         fetchCategories()
     }, [])
 
+    useEffect(() => {
+        const fetchBarrettFeed = async () => {
+            const {data, error} = await supabase
+                .from("user_feed_news")
+                .select()
+
+            if (error) {
+                setBarrettFetchError("Error fetching categories")
+                setBarrettFeed(null)
+                console.log(error)
+            }
+            if (data) {
+                setBarrettFeed(data)
+                setBarrettFetchError(null)
+            }    
+        }
+        fetchBarrettFeed()
+    }, [])
+
     return (
         <div>
+            <h2>Barrett's feed</h2>
+            {barrettFetchError && <p>{barrettFetchError}</p>}
+            {barrettFeed && (
+                <div>
+                    {barrettFeed.map(singleItem => (
+                        console.log(singleItem)
+                    ))}
+                </div>
+            )}
             <h2>Feed Main</h2>
             {fetchError && <p>{fetchError}</p>}
             {category && (
@@ -44,6 +75,7 @@ function FeedMain({supabase}){
                         <p>{singleCat.name}</p>
                     ))}
                 </div>
+                
             )}
         </div>
     )
