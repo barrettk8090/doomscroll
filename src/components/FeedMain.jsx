@@ -41,7 +41,7 @@ function FeedMain({supabase}){
         const fetchBarrettFeed = async () => {
             const {data, error} = await supabase
                 .from("user_feed_news")
-                .select()
+                .select("*,news_item_id(*),user_feed_id(*)")
 
             if (error) {
                 setBarrettFetchError("Error fetching categories")
@@ -62,9 +62,8 @@ function FeedMain({supabase}){
             {barrettFetchError && <p>{barrettFetchError}</p>}
             {barrettFeed && (
                 <div>
-                    {barrettFeed.map(singleItem => (
-                        console.log(singleItem)
-                    ))}
+                    {console.log(barrettFeed)}
+                    {barrettFeed.map(singleItem => <p>{singleItem.news_item_id.title}</p>)}
                 </div>
             )}
             <h2>Feed Main</h2>
