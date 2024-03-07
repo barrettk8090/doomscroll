@@ -20,6 +20,9 @@ function FeedMain({supabase}){
     const [userFetchError, setUserFetchError] = useState(null)
     const [userFeed, setUserFeed] = useState(null)
 
+    const [categoryFetchError, setCategoryFetchError] = useState(null)
+    const [categoryFeed, setCategoryFeed] = useState(null)
+
     {/* Get all categories from Supabase */}
     useEffect(() => {
         const fetchCategories = async () => {
@@ -38,6 +41,28 @@ function FeedMain({supabase}){
             }    
         }
         fetchCategories()
+    }, [])
+
+    {/* Get a categories feed from Supabase */}
+    useEffect(() => {
+        const fetchCategoryFeed = async () => {
+            const {data, error} = await supabase
+                .from("news_item")
+                // Selecting ONLY category ID 1 - bird flu. Need to make this dynamic
+                .select("*")
+                .eq("category_id", 1)
+
+            if (error) {
+                setCategoryFetchError("Error fetching category feed")
+                setCategoryFeed(null)
+                console.log(error)
+            }
+            if (data) {
+                setCategoryFeed(data)
+                setCategoryFetchError(null)
+            }    
+        }
+        fetchCategoryFeed()
     }, [])
 
     {/* Get a users feed from supabase */}
@@ -71,9 +96,23 @@ function FeedMain({supabase}){
                     {userFetchError && <p>{userFetchError}</p>}
                         {userFeed && (
                             <div>
-                                {console.log(userFeed)}
+                                {/* {console.log(userFeed)} */}
                                 {userFeed.map(singleItem => 
-                                    <UserFeed singleItem={singleItem} key={singleItem.id}/>)}
+                                    <UserFeed singleItem={singleItem.news_item_id} key={singleItem.id}/>)}
+                            </div>
+                        )}
+            </div>
+
+            {/* CATEGORY FEED – JUST BIRD FLU FOR NOW */}
+
+            <div className="border-2">
+                <h2>Category Feed</h2>
+                    {categoryFetchError && <p>{categoryFetchError}</p>}
+                        {categoryFeed && (
+                            <div>
+                                {console.log(categoryFeed)}
+                                {categoryFeed.map(singleCat => 
+                                    <CategoryFeed singleCat={singleCat} key={singleCat.id}/>)}
                             </div>
                         )}
             </div>
