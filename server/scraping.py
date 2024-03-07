@@ -2,10 +2,13 @@ from bs4 import BeautifulSoup
 import requests
 from supabase_py import create_client
 import os 
+from dotenv import load_dotenv
 
-# url = os.getenv('VITE_SUPABASE_URL')
-# key = os.getenv('VITE_ANON_KEY')
-# supabase = create_client(url, key)
+load_dotenv()
+
+url = os.getenv('SUPABASE_URL')
+key = os.getenv('ANON_KEY')
+supabase = create_client(url, key)
 
 #Get Climate News 
 nytimes_climate = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
@@ -23,10 +26,18 @@ for article_details in item_tag:
     climate_url = (article_details.find("link")).string
     climate_category = (article_details.find("category")).string
     # Need to add logic "and this article isn't already in supabase..."
-    if climate_category == "Global Warming":
-        print("The article title is: " + climate_title + ". The climate source is " + climate_source + ". The url is " + climate_url)
-
-
+    if climate_category == "Global Warming" and climate_category != "United States Politics and Government":
+        data = {
+            'title': climate_title,
+            'url': climate_url,
+            'source': climate_source,
+            'category_id': 4
+        }
+        response = supabase.table('news_item').insert(data)
+        # if error:
+        #     print(f"Error inserting article: {error}")
+        # else:
+        #     print(f"Inserted article: {climate_title}")
 
 
 title = doc.find_all("title")
