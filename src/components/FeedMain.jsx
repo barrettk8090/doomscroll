@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import UserFeed from "./UserFeed";
+import CategoryFeed from "./CategoryFeed";
 
 function FeedMain({supabase}){
 
@@ -16,9 +17,10 @@ function FeedMain({supabase}){
     const [fetchError, setFetchError] = useState(null)
     const [category, setCategory] = useState(null)
 
-    const [barrettFetchError, setBarrettFetchError] = useState(null)
-    const [barrettFeed, setBarrettFeed] = useState(null)
+    const [userFetchError, setUserFetchError] = useState(null)
+    const [userFeed, setUserFeed] = useState(null)
 
+    {/* Get all categories from Supabase */}
     useEffect(() => {
         const fetchCategories = async () => {
             const {data, error} = await supabase
@@ -38,47 +40,59 @@ function FeedMain({supabase}){
         fetchCategories()
     }, [])
 
+    {/* Get a users feed from supabase */}
     useEffect(() => {
-        const fetchBarrettFeed = async () => {
+        const fetchUserFeed = async () => {
             const {data, error} = await supabase
                 .from("user_feed_news")
                 .select("*,news_item_id(*),user_feed_id(*)")
 
             if (error) {
-                setBarrettFetchError("Error fetching categories")
-                setBarrettFeed(null)
+                setUserFetchError("Error fetching categories")
+                setUserFeed(null)
                 console.log(error)
             }
             if (data) {
-                setBarrettFeed(data)
-                setBarrettFetchError(null)
+                setUserFeed(data)
+                setUserFetchError(null)
             }    
         }
-        fetchBarrettFeed()
+        fetchUserFeed()
     }, [])
 
     return (
         <div>
-            <h2>Feed Main</h2>
-            <h2> Users Feed</h2>
-        {barrettFetchError && <p>{barrettFetchError}</p>}
-            {barrettFeed && (
-                <div>
-                    {console.log(barrettFeed)}
-                    {barrettFeed.map(singleItem => 
-                        <UserFeed singleItem={singleItem} key={singleItem.id}/>)}
-                </div>
-            )}
-            {fetchError && <p>{fetchError}</p>}
-            {category && (
-                <div>
-                    {category.map(singleCat => (
-                        <p>{singleCat.name}</p>
-                    ))}
+            <h1 className="font-display">Your Feeds</h1>
+
+            {/* USER FEED – JUST BARRETT FOR NOW */}
+
+            <div className="border-2">
+                <h2>Users Feed</h2>
+                    {userFetchError && <p>{userFetchError}</p>}
+                        {userFeed && (
+                            <div>
+                                {console.log(userFeed)}
+                                {userFeed.map(singleItem => 
+                                    <UserFeed singleItem={singleItem} key={singleItem.id}/>)}
+                            </div>
+                        )}
+            </div>
+
+            {/* CATEGORIES LISTED */}
+
+            <div className="border-2">                        
+                {fetchError && <p>{fetchError}</p>}
+                {category && (
+                    <div>
+                        {category.map(singleCat => (
+                            <p>{singleCat.name}</p>
+                        ))}
                 </div>
                 
                 
             )}
+            </div>
+
         </div>
     )
 }

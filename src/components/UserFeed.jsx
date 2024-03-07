@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react"
+// Generates feed items for a users feed of subscribed categories
 
 function UserFeed({singleItem}){
-
-
 
     return(
         <>
