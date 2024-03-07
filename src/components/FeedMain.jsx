@@ -16,8 +16,8 @@ function FeedMain({supabase}){
     const [fetchError, setFetchError] = useState(null)
     const [category, setCategory] = useState(null)
 
-    // const [barrettFetchError, setBarrettFetchError] = useState(null)
-    // const [barrettFeed, setBarrettFeed] = useState(null)
+    const [barrettFetchError, setBarrettFetchError] = useState(null)
+    const [barrettFeed, setBarrettFeed] = useState(null)
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -38,29 +38,37 @@ function FeedMain({supabase}){
         fetchCategories()
     }, [])
 
-    // useEffect(() => {
-    //     const fetchBarrettFeed = async () => {
-    //         const {data, error} = await supabase
-    //             .from("user_feed_news")
-    //             .select("*,news_item_id(*),user_feed_id(*)")
+    useEffect(() => {
+        const fetchBarrettFeed = async () => {
+            const {data, error} = await supabase
+                .from("user_feed_news")
+                .select("*,news_item_id(*),user_feed_id(*)")
 
-    //         if (error) {
-    //             setBarrettFetchError("Error fetching categories")
-    //             setBarrettFeed(null)
-    //             console.log(error)
-    //         }
-    //         if (data) {
-    //             setBarrettFeed(data)
-    //             setBarrettFetchError(null)
-    //         }    
-    //     }
-    //     fetchBarrettFeed()
-    // }, [])
+            if (error) {
+                setBarrettFetchError("Error fetching categories")
+                setBarrettFeed(null)
+                console.log(error)
+            }
+            if (data) {
+                setBarrettFeed(data)
+                setBarrettFetchError(null)
+            }    
+        }
+        fetchBarrettFeed()
+    }, [])
 
     return (
         <div>
-            <UserFeed supabase={supabase}/>
             <h2>Feed Main</h2>
+            <h2> Users Feed</h2>
+        {barrettFetchError && <p>{barrettFetchError}</p>}
+            {barrettFeed && (
+                <div>
+                    {console.log(barrettFeed)}
+                    {barrettFeed.map(singleItem => 
+                        <UserFeed singleItem={singleItem} key={singleItem.id}/>)}
+                </div>
+            )}
             {fetchError && <p>{fetchError}</p>}
             {category && (
                 <div>
@@ -68,6 +76,7 @@ function FeedMain({supabase}){
                         <p>{singleCat.name}</p>
                     ))}
                 </div>
+                
                 
             )}
         </div>
