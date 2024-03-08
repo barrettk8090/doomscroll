@@ -23,30 +23,33 @@ doc = BeautifulSoup(result.text, features="lxml")
 item_tag = doc.find_all("item")
 
 #Loop through each article and extract details, save to db
-for article_details in item_tag:
-    climate_title = (article_details.find("title")).string
-    climate_source = "NYTimes"
-    climate_url = (article_details.find("link")).string
-    climate_category = (article_details.find("category")).string
-    if climate_category == "Global Warming" and climate_category != "United States Politics and Government":
-        data = {
-            'title': climate_title,
-            'url': climate_url,
-            'source': climate_source,
-            'category_id': 4
-        }
-        # Check to make sure that an article doesnt already exist in supabase
-        existing_articles, error = supabase.table('news_item').select('title').filter('title', 'eq', climate_title).execute()
-        if error:
-            print(f"Error checking for existing article: {error}")
-        elif existing_articles:
-            print(f"Article with title {climate_title} already exists")
-        else:
-            response, error = supabase.table('news_item').insert(data).execute()
+def nytimes_to_supabase():
+    for article_details in item_tag:
+        climate_title = (article_details.find("title")).string
+        climate_source = "NYTimes"
+        climate_url = (article_details.find("link")).string
+        climate_category = (article_details.find("category")).string
+        if climate_category == "Global Warming" and climate_category != "United States Politics and Government":
+            data = {
+                'title': climate_title,
+                'url': climate_url,
+                'source': climate_source,
+                'category_id': 4
+            }
+            # Check to make sure that an article doesnt already exist in supabase
+            existing_articles, error = supabase.table('news_item').select('title').filter('title', 'eq', climate_title).execute()
             if error:
-                print(f"Error inserting article: {error}")
+                print(f"Error checking for existing article: {error}")
+            elif existing_articles:
+                print(f"Article with title {climate_title} already exists")
             else:
-                print(f"Inserted article: {climate_title}")
+                response, error = supabase.table('news_item').insert(data).execute()
+                if error:
+                    print(f"Error inserting article: {error}")
+                else:
+                    print(f"Inserted article: {climate_title}")
+
+# nytimes_to_supabase()
 
 ############################# B I R D  F L U  N E W S ############################
 
@@ -60,7 +63,45 @@ reddit = praw.Reddit(
 
 subreddit = reddit.subreddit('H5N1_AvianFlu')
 
-for submission in subreddit.top(limit=10):
-    print(submission.title)
-    print('Url:', submission.url)
-    print()
+# def reddit_to_supabase():
+#     for post in subreddit.new(limit=10):
+#         bird_title = post.title
+#         bird_url = post.url
+#         data = {
+#             'title': bird_title,
+#             'url': bird_url,
+#             'source': "Reddit",
+#             'category_id': 1
+#         }
+#         response, error = supabase.table('news_item').select('title').filter('title', 'eq', bird_title).execute()
+#         if error:
+#             # Attempt to print a more detailed error message
+#             print(f"Error checking for existing article: {error['message'] if 'message' in error else error}")
+#         elif response['data']:
+#             print(f"Article with title {post.title} already exists")
+#         else:
+#             response, error = supabase.table('news_item').insert(data).execute()
+#             if error:
+#                 # Attempt to print a more detailed error message
+#                 print(f"Error inserting article: {error['message'] if 'message' in error else error}")
+#             else:
+#                 print(f"Inserted article: {post.title}")
+
+def reddit_to_supabase():
+    for post in subreddit.new(limit=10):
+        bird_title = post.title
+        bird_url = post.url
+        data = {
+            'title': bird_title,
+            'url': bird_url,
+            'source': "Reddit",
+            'category_id': 1
+        }
+        response, error = supabase.table('news_item').insert(data).execute()
+        if error:
+            print(f"Error inserting article: {error}")
+        else:
+            print(f"Inserted article: {post.title}")
+
+reddit_to_supabase()
+
