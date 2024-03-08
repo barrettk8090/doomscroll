@@ -3,6 +3,7 @@ import requests
 from supabase_py import create_client
 import os 
 from dotenv import load_dotenv
+import json
 
 #Get supabase
 load_dotenv()
@@ -10,11 +11,12 @@ url = os.getenv('SUPABASE_URL')
 key = os.getenv('ANON_KEY')
 supabase = create_client(url, key)
 
-#Get Climate News 
+############################# C L I M A T E  N E W S ############################
+
 #NYTimes
 nytimes_climate_url = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
 result = requests.get(nytimes_climate_url)
-doc = BeautifulSoup(result.text, features="xml")
+doc = BeautifulSoup(result.text, features="lxml")
 
 #Parse tags - NYTimes xml articles live inside item tags
 item_tag = doc.find_all("item")
@@ -44,3 +46,10 @@ for article_details in item_tag:
                 print(f"Error inserting article: {error}")
             else:
                 print(f"Inserted article: {climate_title}")
+
+############################# B I R D  F L U  N E W S ############################
+
+bf_subreddit_url = "https://www.reddit.com/r/h5N1_AvianFlu/.json"
+result2 = requests.get(bf_subreddit_url)
+doc2 = json.loads(result2.text)
+print(doc2)

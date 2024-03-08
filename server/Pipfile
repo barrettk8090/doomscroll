@@ -17,6 +17,9 @@ sqlalchemy-serializer = "1.4.1"
 requests = "*"
 flask-bcrypt = "*"
 python-dotenv = "*"
+beautifulsoup4 = "*"
+supabase-py = "*"
+lxml = "*"
 
 [dev-packages]
 
