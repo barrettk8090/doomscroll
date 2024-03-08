@@ -25,7 +25,6 @@ for article_details in item_tag:
     climate_source = "NYTimes"
     climate_url = (article_details.find("link")).string
     climate_category = (article_details.find("category")).string
-    # Need to add logic "and this article isn't already in supabase..."
     if climate_category == "Global Warming" and climate_category != "United States Politics and Government":
         data = {
             'title': climate_title,
@@ -33,25 +32,18 @@ for article_details in item_tag:
             'source': climate_source,
             'category_id': 4
         }
-        response = supabase.table('news_item').insert(data)
-        # if error:
-        #     print(f"Error inserting article: {error}")
-        # else:
-        #     print(f"Inserted article: {climate_title}")
-
-
-title = doc.find_all("title")
-category = doc.find_all("Global Warming")
-# climate = doc.find_all(string="climate")
-
-# for text in title:
-#     if ">" not in text.string and "Climate" in text.string:
-#         print(text.string)
-
-# Status - we're getting titles of articles that contain climate
-# Instead we'll want to filter by category tags - e.g. Global Warming
-# As we're looping through we want to add each one to supabase
-#   making sure it has a "source", and "url" 
+        # Check to make sure that an article doesnt already exist in supabase
+        existing_articles, error = supabase.table('news_item').select('title').filter('title', 'eq', climate_title).execute()
+        if error:
+            print(f"Error checking for existing article: {error}")
+        elif existing_articles:
+            print(f"Article with title {climate_title} already exists")
+        else:
+            response, error = supabase.table('news_item').insert(data).execute()
+            if error:
+                print(f"Error inserting article: {error}")
+            else:
+                print(f"Inserted article: {climate_title}")
 
 def post_to_supabase():
     pass
