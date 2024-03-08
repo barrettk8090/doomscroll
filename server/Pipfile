@@ -20,6 +20,7 @@ python-dotenv = "*"
 beautifulsoup4 = "*"
 supabase-py = "*"
 lxml = "*"
+praw = "*"
 
 [dev-packages]
 

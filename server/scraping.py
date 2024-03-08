@@ -4,6 +4,7 @@ from supabase_py import create_client
 import os 
 from dotenv import load_dotenv
 import json
+import praw
 
 #Get supabase
 load_dotenv()
