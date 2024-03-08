@@ -4,22 +4,22 @@ from supabase_py import create_client
 import os 
 from dotenv import load_dotenv
 
+#Get supabase
 load_dotenv()
-
 url = os.getenv('SUPABASE_URL')
 key = os.getenv('ANON_KEY')
 supabase = create_client(url, key)
 
 #Get Climate News 
-nytimes_climate = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
-
-#NYTIMES CLIMATE - get xml document and save to variable
-result = requests.get(nytimes_climate)
+#NYTimes
+nytimes_climate_url = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
+result = requests.get(nytimes_climate_url)
 doc = BeautifulSoup(result.text, features="xml")
 
-#Parse tags 
+#Parse tags - NYTimes xml articles live inside item tags
 item_tag = doc.find_all("item")
 
+#Loop through each article and extract details, save to db
 for article_details in item_tag:
     climate_title = (article_details.find("title")).string
     climate_source = "NYTimes"
@@ -44,6 +44,3 @@ for article_details in item_tag:
                 print(f"Error inserting article: {error}")
             else:
                 print(f"Inserted article: {climate_title}")
-
-def post_to_supabase():
-    pass
