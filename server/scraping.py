@@ -50,7 +50,17 @@ for article_details in item_tag:
 
 ############################# B I R D  F L U  N E W S ############################
 
-bf_subreddit_url = "https://www.reddit.com/r/h5N1_AvianFlu/.json"
-result2 = requests.get(bf_subreddit_url)
-doc2 = json.loads(result2.text)
-print(doc2)
+reddit = praw.Reddit(
+    client_id=os.getenv("reddit_client_id"),
+    client_secret=os.getenv("reddit_client_secret"),
+    user_agent=os.getenv("reddit_user_agent"),
+    username=os.getenv("reddit_username"),
+    password=os.getenv("reddit_pass")
+)
+
+subreddit = reddit.subreddit('H5N1_AvianFlu')
+
+for submission in subreddit.top(limit=10):
+    print(submission.title)
+    print('Url:', submission.url)
+    print()
