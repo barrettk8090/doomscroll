@@ -63,30 +63,6 @@ reddit = praw.Reddit(
 
 subreddit = reddit.subreddit('H5N1_AvianFlu')
 
-# def reddit_to_supabase():
-#     for post in subreddit.new(limit=10):
-#         bird_title = post.title
-#         bird_url = post.url
-#         data = {
-#             'title': bird_title,
-#             'url': bird_url,
-#             'source': "Reddit",
-#             'category_id': 1
-#         }
-#         response, error = supabase.table('news_item').select('title').filter('title', 'eq', bird_title).execute()
-#         if error:
-#             # Attempt to print a more detailed error message
-#             print(f"Error checking for existing article: {error['message'] if 'message' in error else error}")
-#         elif response['data']:
-#             print(f"Article with title {post.title} already exists")
-#         else:
-#             response, error = supabase.table('news_item').insert(data).execute()
-#             if error:
-#                 # Attempt to print a more detailed error message
-#                 print(f"Error inserting article: {error['message'] if 'message' in error else error}")
-#             else:
-#                 print(f"Inserted article: {post.title}")
-
 def reddit_to_supabase():
     for post in subreddit.new(limit=10):
         bird_title = post.title
@@ -97,11 +73,22 @@ def reddit_to_supabase():
             'source': "Reddit",
             'category_id': 1
         }
-        response, error = supabase.table('news_item').insert(data).execute()
-        if error:
-            print(f"Error inserting article: {error}")
-        else:
-            print(f"Inserted article: {post.title}")
+        #Check if the post title already exists in the database
+        existing_entries = supabase.table('news_item').select('title').eq('title', bird_title).execute()
+        # .eq('url', bird_url).execute()
+        print(existing_entries)
+        # print(existing_entries['data'])
+        # if error:
+        #     print(f"Error checking for existing article: {error}.")
+        # if existing_entries['data']:
+        #     print(f"Article with title {bird_title} already exists.")
+        # else:
+        #     # This runs for all new titles not already in db
+        #     response, error = supabase.table('news_item').insert(data).execute()
+        #     if error:
+        #         print(f"Error inserting article: {error}")
+        #     else:
+        #         print(f"Inserted article: {bird_title}")
 
 reddit_to_supabase()
 
