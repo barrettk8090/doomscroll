@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import json
 import praw
+import re 
 
 #Get supabase
 load_dotenv()
@@ -95,20 +96,24 @@ print(entry)
 
 def earthquakes_gov_to_supabase():
     for earthquake in entry:
-        # Need to loop thru and only pull the Mag (M) from title
-        earthquake_magnitude = (earthquake.find('title')).string
-        # Need to loop thru and only pull from what follows "km" or "direction SE/SW/etc"
-        earthquake_location = (earthquake.find('title')).string
-        #All depth location is found in <dd> tag 
-        earthquake_depth = (earthquake.find('dd')).string
-        link = earthquake.find('link')
-        earthquake_url = (link['href'])
-        data = {
-            'title': (f"❗Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
-            'url': earthquake_url,
-            'source': 'USGS',
-            'category': 8
-        }
-        print(data)
+        title_text = earthquake.find('title').string
+        pattern = r'M\s*(\d+\.\d+)\s*-\s*(.+)'
+        match = re.search(pattern, title_text)
+
+        if match:
+            # Extract magnitude and location
+            earthquake_magnitude = match.group(1)
+            earthquake_location = match.group(2).strip()
+
+            earthquake_depth = (earthquake.find('dd')).string
+            link = earthquake.find('link')
+            earthquake_url = (link['href'])
+            data = {
+                'title': (f"❗Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
+                'url': earthquake_url,
+                'source': 'USGS',
+                'category': 8
+            }
+            print(data)
 
 earthquakes_gov_to_supabase()
