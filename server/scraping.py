@@ -91,7 +91,6 @@ earthquakes_gov_doc = BeautifulSoup(earthquakes_gov_result.text, features="lxml"
 
 # print(earthquakes_gov_doc.prettify())
 entry = earthquakes_gov_doc.find_all("entry")
-print(entry)
 
 
 def earthquakes_gov_to_supabase():
@@ -109,11 +108,15 @@ def earthquakes_gov_to_supabase():
             link = earthquake.find('link')
             earthquake_url = (link['href'])
             data = {
-                'title': (f"❗Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
+                'title': (f"Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
                 'url': earthquake_url,
                 'source': 'USGS',
                 'category': 8
             }
-            print(data)
+            response, error = supabase.table('news_item').insert(data).execute()
+            if error:
+                print(f"Error inserting earthquake: {error}")
+            else:
+                print(f"Inserted earthquake from: {earthquake_location}")
 
 earthquakes_gov_to_supabase()
