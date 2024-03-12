@@ -41,3 +41,8 @@ def reddit_to_supabase():
         else:
             print(f"Inserted article: {bird_url}")
 
+
+### CLIMATE NEWS #### 
+            
+# need to check for how to filter by flair 
+climate_subreddit = reddit.subreddit("https://www.reddit.com/r/collapse/new/?f=flair_name%3A%22Climate%22")

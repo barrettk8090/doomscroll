@@ -16,11 +16,11 @@ supabase = create_client(url, key)
 
 #NYTimes
 nytimes_climate_url = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
-result = requests.get(nytimes_climate_url)
-doc = BeautifulSoup(result.text, features="lxml")
+nytimes_climate_result = requests.get(nytimes_climate_url)
+nytimes_climate_doc = BeautifulSoup(nytimes_climate_result.text, features="lxml")
 
 #Parse tags - NYTimes xml articles live inside item tags
-item_tag = doc.find_all("item")
+item_tag = nytimes_climate_doc.find_all("item")
 
 #Loop through each article and extract details, save to db
 def nytimes_to_supabase():
@@ -79,3 +79,29 @@ def reddit_to_supabase():
         else:
             print(f"Inserted article: {bird_url}")
 
+# reddit_to_supabase()
+
+#################### E A R T H Q U A K E S ####################
+            
+earthquakes_gov_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.atom"
+
+earthquakes_gov_result = requests.get(earthquakes_gov_url)
+earthquakes_gov_doc = BeautifulSoup(earthquakes_gov_result.text, features="lxml")
+
+# print(earthquakes_gov_doc.prettify())
+entry = earthquakes_gov_doc.find_all("entry")
+print(entry)
+
+
+def earthquakes_gov_to_supabase():
+    earthquake_magnitude = 1
+    earthquake_location = 2
+    earthquake_depth = 3
+    earthquake_url = 4
+    data = {
+        'title': (f"❗Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
+        
+    }
+
+
+# earthquakes_gov_to_supabase()
