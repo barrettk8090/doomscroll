@@ -18,7 +18,7 @@ supabase = create_client(url, key)
 #NYTimes
 nytimes_climate_url = "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
 nytimes_climate_result = requests.get(nytimes_climate_url)
-nytimes_climate_doc = BeautifulSoup(nytimes_climate_result.text, features="lxml")
+nytimes_climate_doc = BeautifulSoup(nytimes_climate_result.text, features="xml")
 
 #Parse tags - NYTimes xml articles live inside item tags
 item_tag = nytimes_climate_doc.find_all("item")
@@ -87,7 +87,7 @@ def reddit_to_supabase():
 earthquakes_gov_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.atom"
 
 earthquakes_gov_result = requests.get(earthquakes_gov_url)
-earthquakes_gov_doc = BeautifulSoup(earthquakes_gov_result.text, features="lxml")
+earthquakes_gov_doc = BeautifulSoup(earthquakes_gov_result.text, features="xml")
 
 # print(earthquakes_gov_doc.prettify())
 entry = earthquakes_gov_doc.find_all("entry")
@@ -104,6 +104,7 @@ def earthquakes_gov_to_supabase():
             # Extract magnitude and location
             earthquake_magnitude = match.group(1)
             earthquake_location = match.group(2).strip()
+            earthquake_depth = ""
             # depth is located inside the SECOND <dd> tag
             dd_tags = earthquake.find_all('dd')
             if len(dd_tags) > 1:
