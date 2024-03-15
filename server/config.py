@@ -6,7 +6,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
 import os
+import json
+import praw
+import re 
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+import requests
+from supabase_py import create_client
 
 load_dotenv()
 
@@ -44,3 +50,9 @@ api = Api(app)
 
 # Instantiate CORS
 CORS(app)
+
+#Supabase
+
+url = os.getenv('SUPABASE_URL')
+key = os.getenv('ANON_KEY')
+supabase = create_client(url, key)

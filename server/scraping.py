@@ -1,17 +1,18 @@
-from bs4 import BeautifulSoup
-import requests
-from supabase_py import create_client
-import os 
-from dotenv import load_dotenv
-import json
-import praw
-import re 
+# from bs4 import BeautifulSoup
+# # import requests
+# from supabase_py import create_client
+# import os 
+# from dotenv import load_dotenv
+# import json
+# import praw
+# import re 
+from config import * 
 
 #Get supabase
-load_dotenv()
-url = os.getenv('SUPABASE_URL')
-key = os.getenv('ANON_KEY')
-supabase = create_client(url, key)
+# load_dotenv()
+# url = os.getenv('SUPABASE_URL')
+# key = os.getenv('ANON_KEY')
+# supabase = create_client(url, key)
 
 ############################# C L I M A T E  N E W S ############################
 
@@ -92,7 +93,7 @@ earthquakes_gov_doc = BeautifulSoup(earthquakes_gov_result.text, features="xml")
 # print(earthquakes_gov_doc.prettify())
 entry = earthquakes_gov_doc.find_all("entry")
 
-
+# Current Status - Successfully posts to supabase, but error status code still gets printed
 def earthquakes_gov_to_supabase():
     for earthquake in entry:
         title_text = earthquake.find('title').string
@@ -116,12 +117,11 @@ def earthquakes_gov_to_supabase():
                 'title': (f"Earthquake!  Magnitude: {earthquake_magnitude}  | Location:  {earthquake_location}  | Depth:  {earthquake_depth}."),
                 'url': earthquake_url,
                 'source': 'USGS',
-                'category': 8
+                'category_id': 8
             }
-            response, error = supabase.table('news_item').insert(data).execute()
-            if error:
-                print(f"Error inserting earthquake: {error}")
-            else:
-                print(f"Inserted earthquake from: {earthquake_location}")
+            response = supabase.table('news_item').insert(data).execute()
+            print(response)
+            print(f"Inserted earthquake from: {earthquake_location}")
+
 
 earthquakes_gov_to_supabase()
