@@ -50,7 +50,7 @@ function FeedMain({supabase}){
                 .from("news_item")
                 // Selecting ONLY category ID 1 - bird flu. Need to make this dynamic
                 .select("*")
-                .eq("category_id", 1)
+                .eq("category_id", 8)
 
             if (error) {
                 setCategoryFetchError("Error fetching category feed")
@@ -106,7 +106,7 @@ function FeedMain({supabase}){
             {/* CATEGORY FEED – JUST BIRD FLU FOR NOW */}
 
             <div className="border-2">
-                <h2>Category Feed</h2>
+                <h2>Category Feed (Currently Earthquakes Only)</h2>
                     {categoryFetchError && <p>{categoryFetchError}</p>}
                         {categoryFeed && (
                             <div>

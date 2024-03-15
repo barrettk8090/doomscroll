@@ -1,17 +1,4 @@
-from bs4 import BeautifulSoup
-import requests
-from supabase_py import create_client
-import os 
-from dotenv import load_dotenv
-import json
-import praw
-
-
-# Move this to config file 
-load_dotenv()
-url = os.getenv('SUPABASE_URL')
-key = os.getenv('ANON_KEY')
-supabase = create_client(url, key)
+from config import *
 
 ############################# B I R D  F L U  N E W S ############################
 
@@ -41,6 +28,7 @@ def reddit_to_supabase():
         else:
             print(f"Inserted article: {bird_url}")
 
+reddit_to_supabase()
 
 ### CLIMATE NEWS #### 
             

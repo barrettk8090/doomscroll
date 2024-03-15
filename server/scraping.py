@@ -1,18 +1,6 @@
-# from bs4 import BeautifulSoup
-# # import requests
-# from supabase_py import create_client
-# import os 
-# from dotenv import load_dotenv
-# import json
-# import praw
-# import re 
 from config import * 
 
-#Get supabase
-# load_dotenv()
-# url = os.getenv('SUPABASE_URL')
-# key = os.getenv('ANON_KEY')
-# supabase = create_client(url, key)
+
 
 ############################# C L I M A T E  N E W S ############################
 
