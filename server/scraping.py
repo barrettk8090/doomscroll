@@ -39,7 +39,7 @@ def nytimes_to_supabase():
                 else:
                     print(f"Inserted article: {climate_title}")
 
-# nytimes_to_supabase()
+nytimes_to_supabase()
 
 ############################# B I R D  F L U  N E W S ############################
 
@@ -112,4 +112,4 @@ def earthquakes_gov_to_supabase():
             print(f"Inserted earthquake from: {earthquake_location}")
 
 
-earthquakes_gov_to_supabase()
+# earthquakes_gov_to_supabase()
