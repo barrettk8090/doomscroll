@@ -1,7 +1,5 @@
 from config import *
 
-############################# B I R D  F L U  N E W S ############################
-
 reddit = praw.Reddit(
     client_id=os.getenv("reddit_client_id"),
     client_secret=os.getenv("reddit_client_secret"),
@@ -9,6 +7,8 @@ reddit = praw.Reddit(
     username=os.getenv("reddit_username"),
     password=os.getenv("reddit_pass")
 )
+
+############################# B I R D  F L U  N E W S ############################
 
 H5N1_subreddit = reddit.subreddit('H5N1_AvianFlu')
 
@@ -28,9 +28,33 @@ def reddit_to_supabase():
         else:
             print(f"Inserted article: {bird_url}")
 
-reddit_to_supabase()
+# reddit_to_supabase()
 
-### CLIMATE NEWS #### 
+############################# C L I M A T E  N E W S ############################
             
-# need to check for how to filter by flair 
-climate_subreddit = reddit.subreddit("https://www.reddit.com/r/collapse/new/?f=flair_name%3A%22Climate%22")
+collpase_subreddit_climate = reddit.subreddit("collapse")
+
+#get flair templates
+flair_templates = collpase_subreddit_climate.flair.link_templates
+
+# Separate posts by the "Climate" flair
+flair_text = "Climate"
+
+for post in collpase_subreddit_climate.new(limit=100): 
+    if post.link_flair_text == flair_text:
+        climate_title = str(post.title),
+        for title in climate_title:
+            title.replace("'", "").replace("[", "").replace("]", "").replace("(", "").replace(")", "")
+        climate_url = post.url
+        data = {
+            'title': climate_title,
+            'url': climate_url,
+            'source': "Reddit",
+            'category_id': 2
+        }
+        response, error = supabase.table('news_item').insert(data).execute()
+        if error:
+            print(f"Error inserting article: {error}")
+        else:
+            print(f"Inserted article: {climate_title}")
+        print(data)
