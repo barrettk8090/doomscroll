@@ -67,3 +67,20 @@ def reddit_climate_to_supabase():
 
 flair_text_covid = "COVID-19"
 
+def reddit_covid_to_supabase():
+    for post in collapse_subreddit_climate.new(limit=100): 
+            if post.link_flair_text == flair_text_covid:
+                covid_title = post.title.replace("'", "").replace("[", "").replace("]", "").replace("(", "").replace(")", "")
+                covid_url = post.url
+                data = {
+                    'title': covid_title,
+                    'url': covid_url,
+                    'source': "Reddit",
+                    'category_id': 3
+                }
+                response, error = supabase.table('news_item').insert(data).execute()
+                if error:
+                    print(f"Error inserting article: {error}")
+                else:
+                    print(f"Inserted article: {covid_title}")
+reddit_covid_to_supabase()
