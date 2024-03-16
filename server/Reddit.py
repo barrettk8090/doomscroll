@@ -42,9 +42,7 @@ flair_text = "Climate"
 
 for post in collpase_subreddit_climate.new(limit=100): 
     if post.link_flair_text == flair_text:
-        climate_title = str(post.title),
-        for title in climate_title:
-            title.replace("'", "").replace("[", "").replace("]", "").replace("(", "").replace(")", "")
+        climate_title = post.title.replace("'", "").replace("[", "").replace("]", "").replace("(", "").replace(")", "")
         climate_url = post.url
         data = {
             'title': climate_title,
